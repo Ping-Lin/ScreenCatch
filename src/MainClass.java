@@ -48,7 +48,7 @@ public class MainClass extends JFrame{
 				try{
 					Robot robot = new Robot();
 					File imageFile = new File("test.jpg");
-					image = robot.createScreenCapture(new Rectangle(x1, y1+25, x2-x1, y2-y1));   //measure
+					image = image.getSubimage(x1, y1, x2-x1, y2-y1);// = robot.createScreenCapture(new Rectangle(x1, y1, x2-x1, y2-y1));   //measure
 					if(ImageIO.write(image, "jpg", imageFile)){   //write into file
 						System.out.println("Success");
 						System.exit(0);
@@ -69,14 +69,16 @@ public class MainClass extends JFrame{
 				}
 			}
 		});
-//		addMouseMotionListener(new MouseMotionAdapter(){
-//			public void mouseDragged(MouseEvent e){
-//				int x3 = e.getX();
-//				int y3 = e.getY();
-//				Graphics g = getGraphics();
-//				//g.drawString("111", x3, y3);
-//			}
-//		});
+		addMouseMotionListener(new MouseMotionAdapter(){   //display normal alpha 
+			public void mouseDragged(MouseEvent e){
+				int x3 = e.getX();
+				int y3 = e.getY();
+				Graphics g = getGraphics();
+				g.drawImage(image,x1, y1, x3, y3, x1, y1, x3, y3, null);
+				g.setColor(Color.RED);
+				g.drawRect(x1, y1, x3-x1, y3-y1);
+			}
+		});
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setUndecorated(true);
 		this.add(label);
@@ -84,9 +86,7 @@ public class MainClass extends JFrame{
 	
 	public void paint(Graphics g){   //repaint frame
 		Graphics2D g2D = (Graphics2D)g.create();   //create it and don't forget to dispose it
-		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f);
-		//g2D = image.createGraphics();
-		//g2D.transform(new AffineTransform());
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
 		g2D.setComposite(ac);
 		g2D.drawImage(image, 0, 0, null);
 		g2D.dispose();   //so dispose it
