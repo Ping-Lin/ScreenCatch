@@ -62,6 +62,12 @@ public class MainClass extends JPanel{
 				x2 = e.getX();
 				y2 = e.getY();
 				
+				if(x2 <= 0)   //more carefully
+					x2 = 0;
+				if(y2 <= 0)   //more carefully
+					y2 = 0;
+				
+				
 				tmp2 = y2;   //use temporary variable let picture display normally
 				tmp4 = x2;
 				
@@ -81,7 +87,10 @@ public class MainClass extends JPanel{
 				}
 				Graphics2D g2D = (Graphics2D)getGraphics().create();   //create graphics for selected block
 				g2D.setColor(Color.RED);   //set color to red
-				g2D.drawImage(tmpImage, 0, 0, null);   //draw background alpha=0.3 picture
+				
+				//g2D.drawImage(tmpImage, 0, 0, null);   //draw background alpha=0.3 picture, for Windows
+				g2D.drawImage(tmpImage, 0, -24, null);   //draw background alpha=0.3 picture, for Ubuntu
+				
 				g2D.drawImage(image, tmp3, tmp1, tmp4, tmp2, tmp3, tmp1, tmp4, tmp2, null);   //selected block
 				g2D.drawRect(tmp3, tmp1, tmp4-tmp3, tmp2-tmp1);   //selected block
 				g2D.dispose();   //create and dispose
